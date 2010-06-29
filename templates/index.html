@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://www.facebook.com/2008/fbml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>Facebook Data Permissions Example</title>
+    <link rel="stylesheet" href="/static/base.css" type="text/css"/>
+  </head>
+  <body>
+    <h1>Facebook Data Permissions Example</h1>
+    <div id="login"><fb:login-button autologoutlink="true"></fb:login-button></div>
+    <div id="content">{{ modules.Content() }}</div>
+    <script type="text/javascript">
+      var gFacebookAppId = {{ json_encode(facebook_app_id) }};
+      var gUserId = {{ json_encode(current_user.id if current_user else None) }};
+    </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+    <script src="/static/base.js" type="text/javascript"></script>
+    <img src="/static/loading.gif" style="display:none"/>
+  </body>
+</html>

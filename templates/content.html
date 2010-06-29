@@ -1,0 +1,54 @@
+<div id="pai">
+  <div class="profile"><a href="{{ escape(current_user.profile_url) }}"><img src="http://graph.facebook.com/{{ current_user.id }}/picture"/></a></div>
+  <div class="name">
+    <a href="{{ escape(current_user.profile_url) }}">{{ escape(current_user.name) }}</a>
+    <div style="clear:left"></div>
+  </div>
+</div>
+
+<h2>Photos</h2>
+<div id="photos">
+  {% if not permissions["user_photos"] %}
+    <a href="#" onclick="FB.login(function() { reloadContent(); }, {perms: 'user_photos,user_photo_video_tags,friends_photos'}); return false;">Show my photos</a>
+  {% else %}
+    {% for photo in photos.get("data", [])[:5] %}
+      <a href="{{ escape(photo["link"]) }}"><img src="{{ escape(photo["picture"]) }}"/></a>
+    {% end %}
+  {% end %}
+</div>
+
+<h2>Events</h2>
+<div id="events">
+  {% if not permissions["user_events"] %}
+    <a href="#" onclick="FB.login(function() { reloadContent(); }, {perms: 'user_events'}); return false;">Show my events</a>
+  {% else %}
+    <ul>
+      {% for event in events.get("data", [])[:10] %}
+        <li><a href="http://www.facebook.com/event.php?eid={{ event["id"] }}">{{ escape(event["name"]) }}</a> - {{ datetime.datetime.strptime(event["start_time"], "%Y-%m-%dT%H:%M:%S+0000").strftime("%a, %b %d, %Y") }}</li>
+      {% end %}
+    </ul>
+  {% end %}
+</div>
+
+<h2>Likes</h2>
+<div id="likes">
+  {% if not permissions["user_likes"] and not likes %}
+    <a href="#" onclick="FB.login(function() { reloadContent(); }, {perms: 'user_likes'}); return false;">Show the pages I have liked</a>
+  {% else %}
+    <ul>
+      {% for like in likes.get("data", [])[:10] %}
+        <li><a href="http://www.facebook.com/profile.php?id={{ like["id"] }}">{{ escape(like["name"]) }}</a></li>
+      {% end %}
+    </ul>
+  {% end %}
+</div>
+
+<h2>Email</h2>
+<div id="email">
+  {% if email is None %}
+    <a href="#" onclick="FB.login(function() { reloadContent(); }, {perms: 'email'}); return false;">Show my email address</a>
+  {% else %}
+    <div>{{ escape(email) }}</div>
+  {% end %}
+</div>
+
